@@ -1,9 +1,13 @@
 import json
 import os
 import re
-
+import argparse
 import requests
 
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--prompt", type=str, default="What is elixir, explain it in 1 sentence")
+parser.add_argument("--model", type=str, default="deepseek-r1:8b")
 
 def query_llama_model(prompt, model="deepseek-r1:8b"):
     headers = {"Content-Type": "application/json"}
@@ -54,8 +58,10 @@ def extract_sections(text):
 
 
 if __name__ == "__main__":
+    args = parser.parse_args()
+
     prompt = "What is elixir, explain it in 1 sentence"
-    response = query_llama_model(prompt)
+    response = query_llama_model(args.prompt, model=args.model)
     think_section, response_section = extract_sections(response)
     print("think_section:", think_section)
     print("response_section:", response_section)
